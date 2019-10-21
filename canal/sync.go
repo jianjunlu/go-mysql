@@ -9,9 +9,9 @@ import (
 	"github.com/pingcap/parser/ast"
 	uuid "github.com/satori/go.uuid"
 	"github.com/siddontang/go-log/log"
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/replication"
-	"github.com/siddontang/go-mysql/schema"
+	"github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/replication"
+	"github.com/jianjunlu/go-mysql/schema"
 )
 
 func (c *Canal) startSyncer() (*replication.BinlogStreamer, error) {
@@ -100,7 +100,7 @@ func (c *Canal) runSyncBinlog() error {
 			}
 		case *replication.RowsEvent:
 			// we only focus row based event
-			err = c.handleRowsEvent(ev)
+			err = c.handleRowsEvent(pos, ev)
 			if err != nil {
 				e := errors.Cause(err)
 				// if error is not ErrExcludedTable or ErrTableNotExist or ErrMissingTableMeta, stop canal
@@ -247,7 +247,7 @@ func (c *Canal) updateReplicationDelay(ev *replication.BinlogEvent) {
 	atomic.StoreUint32(c.delay, newDelay)
 }
 
-func (c *Canal) handleRowsEvent(e *replication.BinlogEvent) error {
+func (c *Canal) handleRowsEvent(pos mysql.Position, e *replication.BinlogEvent) error {
 	ev := e.Event.(*replication.RowsEvent)
 
 	// Caveat: table may be altered at runtime.
@@ -270,7 +270,7 @@ func (c *Canal) handleRowsEvent(e *replication.BinlogEvent) error {
 		return errors.Errorf("%s not supported now", e.Header.EventType)
 	}
 	events := newRowsEvent(t, action, ev.Rows, e.Header)
-	return c.eventHandler.OnRow(events)
+	return c.eventHandler.OnRow(pos, events)
 }
 
 func (c *Canal) FlushBinlog() error {

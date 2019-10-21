@@ -1,8 +1,8 @@
 package canal
 
 import (
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/replication"
+	"github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/replication"
 )
 
 type EventHandler interface {
@@ -12,7 +12,7 @@ type EventHandler interface {
 	// It will be called before OnDDL.
 	OnTableChanged(schema string, table string) error
 	OnDDL(nextPos mysql.Position, queryEvent *replication.QueryEvent) error
-	OnRow(e *RowsEvent) error
+	OnRow(pos mysql.Position, e *RowsEvent) error
 	OnXID(nextPos mysql.Position) error
 	OnGTID(gtid mysql.GTIDSet) error
 	// OnPosSynced Use your own way to sync position. When force is true, sync position immediately.
@@ -28,7 +28,7 @@ func (h *DummyEventHandler) OnTableChanged(schema string, table string) error { 
 func (h *DummyEventHandler) OnDDL(nextPos mysql.Position, queryEvent *replication.QueryEvent) error {
 	return nil
 }
-func (h *DummyEventHandler) OnRow(*RowsEvent) error                                { return nil }
+func (h *DummyEventHandler) OnRow(mysql.Position, *RowsEvent) error                { return nil }
 func (h *DummyEventHandler) OnXID(mysql.Position) error                            { return nil }
 func (h *DummyEventHandler) OnGTID(mysql.GTIDSet) error                            { return nil }
 func (h *DummyEventHandler) OnPosSynced(mysql.Position, mysql.GTIDSet, bool) error { return nil }

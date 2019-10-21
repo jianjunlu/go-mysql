@@ -4,8 +4,8 @@ import (
 	"net"
 	"sync/atomic"
 
-	. "github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/packet"
+	. "github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/packet"
 	"github.com/siddontang/go/sync2"
 )
 

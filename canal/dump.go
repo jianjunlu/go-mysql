@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/schema"
 	"github.com/pingcap/errors"
 	"github.com/shopspring/decimal"
 	"github.com/siddontang/go-log/log"
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/schema"
 )
 
 type dumpParseHandler struct {
@@ -93,7 +93,8 @@ func (h *dumpParseHandler) Data(db string, table string, values []string) error 
 	}
 
 	events := newRowsEvent(tableInfo, InsertAction, [][]interface{}{vs}, nil)
-	return h.c.eventHandler.OnRow(events)
+	pos := mysql.Position{Name: h.name, Pos: uint32(h.pos)}
+	return h.c.eventHandler.OnRow(pos, events)
 }
 
 func (c *Canal) AddDumpDatabases(dbs ...string) {

@@ -4,9 +4,9 @@ import (
 	"net"
 
 	"github.com/siddontang/go-log/log"
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/server"
-	"github.com/siddontang/go-mysql/test_util/test_keys"
+	"github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/server"
+	"github.com/jianjunlu/go-mysql/test_util/test_keys"
 
 	"crypto/tls"
 	"time"
