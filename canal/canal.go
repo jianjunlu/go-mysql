@@ -16,10 +16,10 @@ import (
 	"github.com/jianjunlu/go-mysql/dump"
 	"github.com/jianjunlu/go-mysql/mysql"
 	"github.com/jianjunlu/go-mysql/replication"
+	"github.com/jianjunlu/go-mysql/schema"
 	"github.com/pingcap/errors"
 	"github.com/pingcap/parser"
 	"github.com/siddontang/go-log/log"
-	"github.com/jianjunlu/go-mysql/schema"
 )
 
 // Canal can sync your MySQL data into everywhere, like Elasticsearch, Redis, etc...
@@ -155,6 +155,7 @@ func (c *Canal) prepareDumper() error {
 	c.dumper.SkipMasterData(c.cfg.Dump.SkipMasterData)
 	c.dumper.SetMaxAllowedPacket(c.cfg.Dump.MaxAllowedPacketMB)
 	c.dumper.SetProtocol(c.cfg.Dump.Protocol)
+	c.dumper.SetExtraOptions(c.cfg.Dump.ExtraOptions)
 	// Use hex blob for mysqldump
 	c.dumper.SetHexBlob(true)
 
