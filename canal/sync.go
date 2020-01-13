@@ -5,18 +5,18 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/jianjunlu/go-mysql/mysql"
+	"github.com/jianjunlu/go-mysql/replication"
+	"github.com/jianjunlu/go-mysql/schema"
 	"github.com/pingcap/errors"
 	"github.com/pingcap/parser/ast"
 	uuid "github.com/satori/go.uuid"
 	"github.com/siddontang/go-log/log"
-	"github.com/jianjunlu/go-mysql/mysql"
-	"github.com/jianjunlu/go-mysql/replication"
-	"github.com/jianjunlu/go-mysql/schema"
 )
 
 func (c *Canal) startSyncer() (*replication.BinlogStreamer, error) {
 	gset := c.master.GTIDSet()
-	if gset == nil {
+	if gset == nil || gset.String() == "" {
 		pos := c.master.Position()
 		s, err := c.syncer.StartSync(pos)
 		if err != nil {
