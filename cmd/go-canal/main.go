@@ -105,8 +105,8 @@ type handler struct {
 	canal.DummyEventHandler
 }
 
-func (h *handler) OnRow(e *canal.RowsEvent) error {
-	fmt.Printf("%v\n", e)
+func (s *handler) OnRow(pos mysql.Position, e *canal.RowsEvent) error {
+	fmt.Printf("e:%v, pos\n", e, pos)
 
 	return nil
 }
