@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/pingcap/check"
 	"github.com/jianjunlu/go-mysql/client"
+	. "github.com/pingcap/check"
 	"github.com/siddontang/go-mysql/mysql"
 )
 
